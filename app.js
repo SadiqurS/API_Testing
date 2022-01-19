@@ -51,14 +51,42 @@
 //         console.log("error",err)
 //     })
 
+
 //using an async function and axios to retrive data from an api
+const btc = document.querySelector("#btc")
+const sign = document.querySelector("#sign")
 const btcPrice = async () => {
     try{
         const res = await axios.get("https://api.cryptonator.com/api/ticker/btc-usd")
-        console.log(res.data.ticker.price)
+        const request = (res.data.ticker.price)
+        btc.innerText = request
+        console.log(request)
     }
     catch(e){
-        console.log("error",e)
+        btc.innerText =("error",e)
+        sign.remove()
     }
 }
-btcPrice();
+btcPrice()
+
+const jokes = document.querySelector("#jokes")
+const button = document.querySelector("#btn")
+const addNewJoke = async () =>{
+    const joketext = await getDadJoke()
+    const newLI = document.createElement("LI")
+    newLI.append(joketext);
+    jokes.append(newLI)
+
+}
+const getDadJoke = async () =>{
+    try{
+        const config = {headers: {Accept: "application/json" } }
+        const response = await axios.get("https://icanhazdadjoke.com/",config)
+        return response.data.joke;
+    }
+    catch(e){
+        return "ERROR NO JOKES AVAILABLE"
+    }
+    
+}
+button.addEventListener("click", addNewJoke)
